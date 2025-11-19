@@ -2,11 +2,19 @@ import { getUserPlanTier } from '@/lib/templateAccess'
 import { templates } from '@/lib/templates'
 import TemplateGallery from '@/components/TemplateGallery'
 import Header from '@/components/Header'
+import { getSession } from '@/lib/auth'
+import { redirect } from 'next/navigation'
 
 export default async function TemplatesPage() {
+  const session = await getSession()
+  
+  if (!session || !session.user) {
+    redirect('/auth/signin?callbackUrl=/templates')
+  }
+
   // Show ALL templates, not just accessible ones
   // Locked templates will be marked as locked in the gallery
-  const userPlan = await getUserPlanTier()
+  const userPlan = await getUserPlanTier(session.user.id)
 
   return (
     <>

@@ -8,8 +8,8 @@ import { getUserLimits } from './subscription'
  * - basic: can access free + basic templates
  * - pro: can access all templates
  */
-export async function canUseTemplate(templateRequiredPlan: PlanTier): Promise<boolean> {
-  const userLimits = await getUserLimits()
+export async function canUseTemplate(templateRequiredPlan: PlanTier, userId: string): Promise<boolean> {
+  const userLimits = await getUserLimits(userId)
   const userPlan = userLimits.planName as PlanTier
 
   // Plan hierarchy
@@ -28,16 +28,16 @@ export async function canUseTemplate(templateRequiredPlan: PlanTier): Promise<bo
 /**
  * Get user's current plan tier
  */
-export async function getUserPlanTier(): Promise<PlanTier> {
-  const userLimits = await getUserLimits()
+export async function getUserPlanTier(userId: string): Promise<PlanTier> {
+  const userLimits = await getUserLimits(userId)
   return (userLimits.planName as PlanTier) || 'free'
 }
 
 /**
  * Filter templates based on user's plan access
  */
-export async function getAccessibleTemplates() {
-  const userPlanTier = await getUserPlanTier()
+export async function getAccessibleTemplates(userId: string) {
+  const userPlanTier = await getUserPlanTier(userId)
   const { templates } = require('./templates')
   
   const planHierarchy: Record<PlanTier, number> = {

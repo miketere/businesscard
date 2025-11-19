@@ -1,30 +1,26 @@
-import { withAuth } from 'next-auth/middleware'
+import { getToken } from 'next-auth/jwt'
 import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-export default withAuth(
-  function middleware(req) {
-    return NextResponse.next()
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        // Protect dashboard and other authenticated routes
-        if (req.nextUrl.pathname.startsWith('/dashboard') ||
-            req.nextUrl.pathname.startsWith('/settings') ||
-            req.nextUrl.pathname.startsWith('/analytics') ||
-            req.nextUrl.pathname.startsWith('/contacts') ||
-            req.nextUrl.pathname.startsWith('/create') ||
-            req.nextUrl.pathname.startsWith('/edit')) {
-          return !!token
-        }
-        return true
-      },
-    },
-    pages: {
-      signIn: '/auth/signin',
-    },
+export async function middleware(request: NextRequest) {
+  const token = await getToken({ 
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET 
+  })
+  const { pathname } = request.nextUrl
+
+  // Protect dashboard and other authenticated routes
+  const protectedPaths = ['/dashboard', '/settings', '/analytics', '/contacts', '/create', '/edit']
+  const isProtected = protectedPaths.some(path => pathname.startsWith(path))
+
+  if (isProtected && !token) {
+    const signInUrl = new URL('/auth/signin', request.url)
+    signInUrl.searchParams.set('callbackUrl', pathname)
+    return NextResponse.redirect(signInUrl)
   }
-)
+
+  return NextResponse.next()
+}
 
 export const config = {
   matcher: [

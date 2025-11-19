@@ -4,14 +4,21 @@ import { checkFeatureAccess } from '@/lib/subscription'
 import AnalyticsDashboard from '@/components/AnalyticsDashboard'
 import Header from '@/components/Header'
 import Link from 'next/link'
+import { getSession } from '@/lib/auth'
+import { redirect } from 'next/navigation'
 
 // Force dynamic rendering to avoid build-time database access
 export const dynamic = 'force-dynamic'
 
-const TEMP_USER_ID = 'temp-user-id'
-
 export default async function AnalyticsPage() {
-  const hasAnalytics = await checkFeatureAccess('analytics')
+  const session = await getSession()
+  
+  if (!session || !session.user) {
+    redirect('/auth/signin?callbackUrl=/analytics')
+  }
+
+  const userId = session.user.id
+  const hasAnalytics = await checkFeatureAccess('analytics', userId)
 
   if (!hasAnalytics) {
     return (
@@ -41,7 +48,7 @@ export default async function AnalyticsPage() {
   }
 
   const cards = await prisma.card.findMany({
-    where: { userId: TEMP_USER_ID },
+    where: { userId },
   })
 
   const analyticsData = await Promise.all(
