@@ -2,6 +2,20 @@ import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { prisma } from '@/lib/prisma'
 
+// Validate required environment variables
+if (!process.env.GOOGLE_CLIENT_ID) {
+  console.error('❌ GOOGLE_CLIENT_ID is missing. Please set it in your environment variables.')
+}
+if (!process.env.GOOGLE_CLIENT_SECRET) {
+  console.error('❌ GOOGLE_CLIENT_SECRET is missing. Please set it in your environment variables.')
+}
+if (!process.env.NEXTAUTH_SECRET) {
+  console.error('❌ NEXTAUTH_SECRET is missing. Please set it in your environment variables.')
+}
+if (!process.env.NEXTAUTH_URL) {
+  console.error('❌ NEXTAUTH_URL is missing. Please set it in your environment variables.')
+}
+
 export const authOptions = {
   adapter: PrismaAdapter(prisma) as any,
   providers: [
