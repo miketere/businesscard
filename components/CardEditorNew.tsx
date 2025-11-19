@@ -147,7 +147,7 @@ export default function CardEditorNew({ cardId, initialData }: { cardId?: string
               primaryColor: cardData.primaryColor,
               secondaryColor: cardData.secondaryColor,
               template: cardData.template,
-              socialLinks: cardData.socialLinks,
+              socialLinks: cardData.socialLinks as Record<string, string>,
             }}
             showQR={false}
           />
