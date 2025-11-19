@@ -7,6 +7,9 @@ import { generateVCard } from '@/lib/utils'
 import DownloadButton from './DownloadButton'
 import CardViewTracker from '@/components/CardViewTracker'
 
+// Force dynamic rendering to avoid build-time database access
+export const dynamic = 'force-dynamic'
+
 export default async function CardPage({ 
   params,
   searchParams,

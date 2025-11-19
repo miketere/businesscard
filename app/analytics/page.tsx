@@ -1,4 +1,7 @@
 import { prisma } from '@/lib/prisma'
+
+// Force dynamic rendering to avoid build-time database access
+export const dynamic = 'force-dynamic'
 import { getCardAnalytics } from '@/lib/analytics'
 import { checkFeatureAccess } from '@/lib/subscription'
 import AnalyticsDashboard from '@/components/AnalyticsDashboard'

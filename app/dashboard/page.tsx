@@ -6,6 +6,9 @@ import CardsGrid from '@/components/CardsGrid'
 
 const TEMP_USER_ID = 'temp-user-id'
 
+// Force dynamic rendering to avoid build-time database access
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardPage() {
   const cards = await prisma.card.findMany({
     where: { userId: TEMP_USER_ID },

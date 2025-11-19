@@ -5,6 +5,9 @@ import Header from '@/components/Header'
 
 const TEMP_USER_ID = 'temp-user-id'
 
+// Force dynamic rendering to avoid build-time database access
+export const dynamic = 'force-dynamic'
+
 export default async function ContactsPage() {
   const contacts = await prisma.contact.findMany({
     where: { userId: TEMP_USER_ID },

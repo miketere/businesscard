@@ -1,4 +1,7 @@
 import { prisma } from '@/lib/prisma'
+
+// Force dynamic rendering to avoid build-time database access
+export const dynamic = 'force-dynamic'
 import { notFound } from 'next/navigation'
 import CardEditorNew from '@/components/CardEditorNew'
 import Header from '@/components/Header'
