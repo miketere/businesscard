@@ -48,19 +48,19 @@ export default async function CardPage({
   const vcard = generateVCard(card)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4 sm:p-6 lg:p-8">
       <Suspense fallback={null}>
         <CardViewTracker cardId={card.id} />
       </Suspense>
       <div className="max-w-2xl w-full">
-        <div className="mb-6">
+        <div className="mb-4 sm:mb-6">
           <TemplateComponent cardData={cardData} />
         </div>
 
-        <div className="bg-white p-6 rounded-xl shadow-lg">
+        <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
           <ShareButtons cardUrl={cardUrl} cardName={card.name} />
           
-          <div className="mt-6 pt-6 border-t">
+          <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t">
             <DownloadButton vcard={vcard} cardName={card.name} cardId={card.id} />
           </div>
         </div>

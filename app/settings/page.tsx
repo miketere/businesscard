@@ -110,7 +110,7 @@ export default function SettingsPage() {
           {/* Tabs */}
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-neutral-200/50 shadow-sm mb-6">
             <div className="border-b border-neutral-200">
-              <nav className="flex space-x-4 sm:space-x-8 px-4 sm:px-6 overflow-x-auto" aria-label="Tabs">
+              <nav className="flex space-x-2 sm:space-x-4 md:space-x-8 px-2 sm:px-4 md:px-6 overflow-x-auto scrollbar-hide" aria-label="Tabs">
                 {tabs.map((tab) => {
                   const Icon = tab.icon
                   const isActive = activeTab === tab.id
@@ -119,7 +119,7 @@ export default function SettingsPage() {
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
                       className={`
-                        flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm transition-colors
+                        flex items-center gap-1 sm:gap-2 py-3 sm:py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap
                         ${
                           isActive
                             ? 'border-teal-600 text-teal-600'
@@ -127,10 +127,11 @@ export default function SettingsPage() {
                         }
                       `}
                     >
-                      <Icon className="w-4 h-4" />
-                      <span>{tab.label}</span>
+                      <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <span className="hidden sm:inline">{tab.label}</span>
+                      <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
                       {tab.isPro && (
-                        <span className="ml-1 text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-semibold">
+                        <span className="ml-1 text-[10px] sm:text-xs bg-orange-100 text-orange-700 px-1.5 sm:px-2 py-0.5 rounded-full font-semibold">
                           PRO
                         </span>
                       )}
@@ -141,7 +142,7 @@ export default function SettingsPage() {
             </div>
 
             {/* Tab Content */}
-            <div className="p-8">
+            <div className="p-4 sm:p-6 md:p-8">
               {/* Account Tab */}
               {activeTab === 'account' && (
                 <div className="space-y-6">
@@ -165,7 +166,7 @@ export default function SettingsPage() {
                       <User className="w-4 h-4" />
                       Name
                     </label>
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
                       <input
                         type="text"
                         value={name}
@@ -175,7 +176,7 @@ export default function SettingsPage() {
                       />
                       <button
                         onClick={handleSaveName}
-                        className="px-4 py-2 rounded-xl gradient-primary text-white hover:shadow-lg transition-all font-medium"
+                        className="px-4 py-2 rounded-xl gradient-primary text-white hover:shadow-lg transition-all font-medium whitespace-nowrap"
                       >
                         Save
                       </button>
@@ -188,8 +189,8 @@ export default function SettingsPage() {
                       <Upload className="w-4 h-4" />
                       Account Photo
                     </label>
-                    <div className="flex items-center gap-4">
-                      <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                      <div className="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300 flex-shrink-0">
                         {accountPhoto ? (
                           <img src={accountPhoto} alt="Account" className="w-full h-full rounded-lg object-cover" />
                         ) : (
@@ -200,7 +201,7 @@ export default function SettingsPage() {
                           </div>
                         )}
                       </div>
-                      <div>
+                      <div className="flex flex-col sm:flex-row gap-2 sm:gap-0">
                         <label className="cursor-pointer">
                           <input
                             type="file"
@@ -215,7 +216,7 @@ export default function SettingsPage() {
                         {accountPhoto && (
                           <button
                             onClick={() => setAccountPhoto(null)}
-                            className="ml-2 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium"
+                            className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-medium sm:ml-2"
                           >
                             Remove
                           </button>

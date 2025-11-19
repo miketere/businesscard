@@ -40,11 +40,13 @@ export default function CardPreview({ cardData, showQR = true, cardUrl }: CardPr
   }, [cardData.name, cardData.title, cardData.company, cardData.email, cardData.phone, cardData.website, cardData.address, cardData.bio, cardData.template, cardData.primaryColor, cardData.secondaryColor, cardData.profileImage, cardData.logo])
 
   return (
-    <div className="w-full flex justify-center">
+    <div className="w-full flex flex-col items-center">
       {showQR && cardUrl && (
-        <div className="mb-4 p-4 bg-gray-50 rounded-lg text-center">
-          <QRCodeSVG value={cardUrl} size={150} className="mx-auto" />
-          <p className="mt-2 text-xs text-gray-600">Scan to view card</p>
+        <div className="mb-4 p-4 sm:p-6 bg-gray-50 rounded-lg text-center w-full max-w-xs sm:max-w-sm">
+          <div className="w-32 h-32 sm:w-40 sm:h-40 mx-auto">
+            <QRCodeSVG value={cardUrl} size={160} className="w-full h-full" />
+          </div>
+          <p className="mt-2 text-xs sm:text-sm text-gray-600">Scan to view card</p>
         </div>
       )}
       <div key={renderKey} className="w-full">

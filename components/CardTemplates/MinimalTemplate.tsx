@@ -18,21 +18,21 @@ interface CardData {
 
 export default function MinimalTemplate({ cardData }: { cardData: CardData }) {
   return (
-    <div className="w-full max-w-sm mx-auto aspect-[9/16] rounded-lg shadow-sm border-2 border-gray-200 min-h-[400px] p-8 flex flex-col bg-white">
+    <div className="w-full max-w-[280px] sm:max-w-sm md:max-w-md mx-auto aspect-[9/16] rounded-lg shadow-sm border-2 border-gray-200 min-h-[400px] p-6 sm:p-8 flex flex-col bg-white">
       {/* Profile Section */}
-      <div className="text-center mb-8 flex-shrink-0">
+      <div className="text-center mb-6 sm:mb-8 flex-shrink-0">
         {cardData.profileImage ? (
           <img
             src={cardData.profileImage}
             alt={cardData.name}
-            className="w-20 h-20 rounded-full mx-auto mb-4 object-cover"
+            className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto mb-3 sm:mb-4 object-cover"
           />
         ) : (
-          <div className="w-20 h-20 rounded-full mx-auto mb-4 bg-gray-200"></div>
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full mx-auto mb-3 sm:mb-4 bg-gray-200"></div>
         )}
-        <h2 className="text-2xl font-bold text-gray-900 mb-1">{cardData.name || 'Your Name'}</h2>
-        <p className="text-gray-600 mb-1">{cardData.title || 'Job Title'}</p>
-        <p className="text-sm text-gray-500">{cardData.company || 'Company'}</p>
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-1">{cardData.name || 'Your Name'}</h2>
+        <p className="text-base sm:text-lg text-gray-600 mb-1">{cardData.title || 'Job Title'}</p>
+        <p className="text-xs sm:text-sm text-gray-500">{cardData.company || 'Company'}</p>
       </div>
 
       {/* Contact Section */}

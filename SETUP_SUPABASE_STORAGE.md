@@ -30,31 +30,40 @@ This guide will help you set up Supabase Storage for file uploads in your applic
 
 4. **Click "Create bucket"**
 
-## Step 3: Set Up Bucket Policies (Optional but Recommended)
+## Step 3: Set Up Bucket Policies (REQUIRED for uploads to work)
 
-For better security, you can set up Row Level Security (RLS) policies:
+**Important**: Even if the bucket is marked as "Public", you still need RLS policies to allow uploads. Follow these steps:
 
-1. **Go to Storage** → **Policies** → **uploads bucket**
-2. **Click "New Policy"**
-3. **Create a policy for uploads**:
-   - **Policy name**: `Allow authenticated uploads`
-   - **Allowed operation**: `INSERT`
-   - **Policy definition**: 
-     ```sql
-     (bucket_id = 'uploads'::text)
-     ```
-   - **Check expression**: `true` (or add your authentication check)
+1. **Go to Storage** in your Supabase dashboard
+2. **Click on the `uploads` bucket** to open it
+3. **Click the "Policies" tab** (or go to Storage → Policies → uploads bucket)
+4. **Click "New Policy"**
 
-4. **Create a policy for public reads**:
-   - **Policy name**: `Allow public reads`
-   - **Allowed operation**: `SELECT`
-   - **Policy definition**: 
-     ```sql
-     (bucket_id = 'uploads'::text)
-     ```
-   - **Check expression**: `true`
+### Create Policy 1: Allow Public Uploads (INSERT)
 
-**Note**: For simplicity, you can make the bucket public (which we did in Step 2), and these policies are optional.
+1. **Select "Create a policy from scratch"** (or use template)
+2. **Policy name**: `Allow public uploads`
+3. **Allowed operation**: Select `INSERT` (for uploading files)
+4. **Policy definition**: Leave as default or use:
+   ```sql
+   (bucket_id = 'uploads'::text)
+   ```
+5. **Check expression**: Enter `true` (allows anyone to upload)
+6. **Click "Review"** then **"Save policy"**
+
+### Create Policy 2: Allow Public Reads (SELECT)
+
+1. **Click "New Policy"** again
+2. **Policy name**: `Allow public reads`
+3. **Allowed operation**: Select `SELECT` (for reading/viewing files)
+4. **Policy definition**: Leave as default or use:
+   ```sql
+   (bucket_id = 'uploads'::text)
+   ```
+5. **Check expression**: Enter `true` (allows anyone to read)
+6. **Click "Review"** then **"Save policy"**
+
+**Note**: These policies allow anyone (including unauthenticated users) to upload and read files. For production, you may want to add authentication checks later.
 
 ## Step 4: Add Environment Variables
 
@@ -64,7 +73,7 @@ Add these to your `.env` file:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtoamFqbWRuemJ3bWx4dGhwYW55Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM1MDA5NzUsImV4cCI6MjA3OTA3Njk3NX0.MlEMP9oA0oKgSxKQ-i_RO13p2V5LQanMT6JjZcNRszs
 ```
 
 ### Vercel Deployment
@@ -123,6 +132,32 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 4. **Check file size**:
    - Default limit is 5MB
    - Increase the limit in bucket settings if needed
+
+### Error: "new row violates row-level security policy"
+
+**This is the most common error!** It means RLS policies are blocking your uploads.
+
+**Solution**: You need to create RLS policies for the `uploads` bucket:
+
+1. **Go to Supabase Dashboard** → **Storage** → Click on `uploads` bucket
+2. **Click "Policies" tab**
+3. **Create two policies**:
+
+   **Policy 1 - Allow Uploads:**
+   - Click "New Policy"
+   - Name: `Allow public uploads`
+   - Operation: `INSERT`
+   - Check expression: `true`
+   - Save
+
+   **Policy 2 - Allow Reads:**
+   - Click "New Policy" again
+   - Name: `Allow public reads`
+   - Operation: `SELECT`
+   - Check expression: `true`
+   - Save
+
+4. **Try uploading again** - it should work now!
 
 ### Error: "Storage bucket not found"
 

@@ -56,36 +56,38 @@ export default function ShareButtons({ cardUrl, cardName }: ShareButtonsProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-2 sm:gap-3">
         <button
           onClick={copyToClipboard}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm sm:text-base flex-1 sm:flex-initial min-w-[120px] sm:min-w-0"
         >
-          {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+          {copied ? <Check className="w-4 h-4 sm:w-5 sm:h-5" /> : <Copy className="w-4 h-4 sm:w-5 sm:h-5" />}
           {copied ? 'Copied!' : 'Copy Link'}
         </button>
 
         <button
           onClick={() => setShowQR(!showQR)}
-          className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3 bg-white border-2 border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors text-sm sm:text-base flex-1 sm:flex-initial min-w-[120px] sm:min-w-0"
         >
-          <QrCode className="w-4 h-4" />
+          <QrCode className="w-4 h-4 sm:w-5 sm:h-5" />
           QR Code
         </button>
 
         <button
           onClick={() => setEmailModal(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors"
+          className="flex items-center gap-2 px-4 py-2.5 sm:px-6 sm:py-3 bg-white border-2 border-indigo-600 text-indigo-600 rounded-lg hover:bg-indigo-50 transition-colors text-sm sm:text-base flex-1 sm:flex-initial min-w-[120px] sm:min-w-0"
         >
-          <Mail className="w-4 h-4" />
+          <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
           Email
         </button>
       </div>
 
       {showQR && (
-        <div className="p-4 bg-gray-50 rounded-lg text-center">
-          <QRCodeSVG value={cardUrl} size={200} className="mx-auto" />
-          <p className="mt-2 text-xs text-gray-600">Scan to view card</p>
+        <div className="p-4 sm:p-6 bg-gray-50 rounded-lg text-center">
+          <div className="w-48 h-48 sm:w-64 sm:h-64 mx-auto">
+            <QRCodeSVG value={cardUrl} size={256} className="w-full h-full" />
+          </div>
+          <p className="mt-2 text-xs sm:text-sm text-gray-600">Scan to view card</p>
         </div>
       )}
 

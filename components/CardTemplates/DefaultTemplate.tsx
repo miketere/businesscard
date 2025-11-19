@@ -18,23 +18,23 @@ interface CardData {
 
 export default function DefaultTemplate({ cardData }: { cardData: CardData }) {
   return (
-    <div className="w-full max-w-sm mx-auto aspect-[9/16] rounded-2xl shadow-2xl overflow-hidden flex flex-col"
+    <div className="w-full max-w-[280px] sm:max-w-sm md:max-w-md mx-auto aspect-[9/16] rounded-2xl shadow-2xl overflow-hidden flex flex-col"
       style={{ background: `linear-gradient(135deg, ${cardData.primaryColor}, ${cardData.secondaryColor})` }}>
       {/* Header Section */}
-      <div className="flex-1 p-6 text-white flex flex-col justify-center items-center text-center">
+      <div className="flex-1 p-4 sm:p-6 text-white flex flex-col justify-center items-center text-center">
         {cardData.profileImage ? (
           <img
             src={cardData.profileImage}
             alt={cardData.name}
-            className="w-32 h-32 rounded-full mx-auto mb-4 object-cover border-4 border-white/30 shadow-xl"
+            className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 rounded-full mx-auto mb-3 sm:mb-4 object-cover border-4 border-white/30 shadow-xl"
           />
         ) : (
-          <div className="w-32 h-32 bg-white/20 rounded-full mx-auto mb-4 border-4 border-white/30 shadow-xl"></div>
+          <div className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-white/20 rounded-full mx-auto mb-3 sm:mb-4 border-4 border-white/30 shadow-xl"></div>
         )}
 
-        <h2 className="text-2xl font-bold mb-2">{cardData.name || 'Your Name'}</h2>
-        <p className="text-lg opacity-90 mb-1">{cardData.title || 'Job Title'}</p>
-        <p className="text-sm opacity-75">{cardData.company || 'Company'}</p>
+        <h2 className="text-xl sm:text-2xl font-bold mb-2">{cardData.name || 'Your Name'}</h2>
+        <p className="text-base sm:text-lg opacity-90 mb-1">{cardData.title || 'Job Title'}</p>
+        <p className="text-xs sm:text-sm opacity-75">{cardData.company || 'Company'}</p>
       </div>
 
       {/* Contact Section */}
