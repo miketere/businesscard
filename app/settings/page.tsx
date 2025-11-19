@@ -104,8 +104,8 @@ export default function SettingsPage() {
     <>
       <Header breadcrumbs={[{ label: 'Settings' }]} />
       <div className="min-h-screen bg-gradient-to-br from-teal-50 via-white to-orange-50 pt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-8">Settings</h1>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-8">Settings</h1>
 
           {/* Tabs */}
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-neutral-200/50 shadow-sm mb-6">
@@ -145,18 +145,18 @@ export default function SettingsPage() {
             <div className="p-4 sm:p-6 md:p-8">
               {/* Account Tab */}
               {activeTab === 'account' && (
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   {/* Current User Display */}
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center text-white font-semibold text-lg shadow-md">
+                  <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl gradient-primary flex items-center justify-center text-white font-semibold text-base sm:text-lg shadow-md flex-shrink-0">
                       {accountPhoto ? (
                         <img src={accountPhoto} alt="Account" className="w-full h-full rounded-full object-cover" />
                       ) : (
                         userInitial
                       )}
                     </div>
-                    <div>
-                      <p className="text-gray-600">{email}</p>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm sm:text-base text-gray-600 truncate">{email}</p>
                     </div>
                   </div>
 
@@ -250,10 +250,10 @@ export default function SettingsPage() {
                           className="w-full px-4 py-2 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                           placeholder="Enter new email address"
                         />
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                           <button
                             onClick={handleChangeEmail}
-                            className="px-4 py-2 rounded-xl gradient-primary text-white hover:shadow-lg transition-all font-medium"
+                            className="px-4 py-2 rounded-xl gradient-primary text-white hover:shadow-lg transition-all font-medium flex-1 sm:flex-initial"
                           >
                             Save
                           </button>
@@ -262,7 +262,7 @@ export default function SettingsPage() {
                               setShowChangeEmail(false)
                               setNewEmail('')
                             }}
-                            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium flex-1 sm:flex-initial"
                           >
                             Cancel
                           </button>
@@ -315,10 +315,10 @@ export default function SettingsPage() {
                           className="w-full px-4 py-2 border border-neutral-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent"
                           placeholder="Confirm new password"
                         />
-                        <div className="flex gap-2">
+                        <div className="flex flex-col sm:flex-row gap-2">
                           <button
                             onClick={handleResetPassword}
-                            className="px-4 py-2 rounded-xl gradient-primary text-white hover:shadow-lg transition-all font-medium"
+                            className="px-4 py-2 rounded-xl gradient-primary text-white hover:shadow-lg transition-all font-medium flex-1 sm:flex-initial"
                           >
                             Save
                           </button>
@@ -329,7 +329,7 @@ export default function SettingsPage() {
                               setNewPassword('')
                               setConfirmPassword('')
                             }}
-                            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                            className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium flex-1 sm:flex-initial"
                           >
                             Cancel
                           </button>
@@ -339,17 +339,17 @@ export default function SettingsPage() {
                   </div>
 
                   {/* Delete Account */}
-                  <div className="pt-6 border-t border-gray-200 space-y-2">
+                  <div className="pt-4 sm:pt-6 border-t border-gray-200 space-y-2">
                     <label className="text-sm font-semibold text-gray-900 flex items-center gap-2">
                       <Trash2 className="w-4 h-4" />
                       Delete
                     </label>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-gray-600 text-xs sm:text-sm">
                       Once you delete your account, there is no going back. Please be certain.
                     </p>
                     <button
                       onClick={handleDeleteAccount}
-                      className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
+                      className="w-full sm:w-auto px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
                     >
                       Delete Account
                     </button>
@@ -360,48 +360,48 @@ export default function SettingsPage() {
               {/* Contact Exchange Tab */}
               {activeTab === 'contact-exchange' && (
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Contact Exchange</h2>
-                  <p className="text-gray-600">Contact exchange settings coming soon...</p>
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Contact Exchange</h2>
+                  <p className="text-sm sm:text-base text-gray-600">Contact exchange settings coming soon...</p>
                 </div>
               )}
 
               {/* Integrations Tab */}
               {activeTab === 'integrations' && (
                 <div>
-                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                    <p className="text-yellow-800 font-semibold">Premium Feature</p>
-                    <p className="text-yellow-700 text-sm mt-1 mb-3">
+                  <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+                    <p className="text-yellow-800 font-semibold text-sm sm:text-base">Premium Feature</p>
+                    <p className="text-yellow-700 text-xs sm:text-sm mt-1 mb-3">
                       Integrations are available in Basic and Pro plans.
                     </p>
                     <a
                       href="/settings/subscription"
-                      className="inline-flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm"
+                      className="inline-flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-xs sm:text-sm w-full sm:w-auto justify-center"
                     >
                       Upgrade Plan
                     </a>
                   </div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Integrations</h2>
-                  <p className="text-gray-600">Integrations settings coming soon...</p>
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Integrations</h2>
+                  <p className="text-sm sm:text-base text-gray-600">Integrations settings coming soon...</p>
                 </div>
               )}
 
               {/* Export Contacts Tab */}
               {activeTab === 'export-contacts' && (
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Export Contacts</h2>
-                  <p className="text-gray-600">Export contacts functionality coming soon...</p>
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Export Contacts</h2>
+                  <p className="text-sm sm:text-base text-gray-600">Export contacts functionality coming soon...</p>
                 </div>
               )}
 
               {/* Subscription Tab */}
               {activeTab === 'subscription' && (
                 <div>
-                  <p className="text-gray-600 mb-4">
+                  <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">
                     Manage your subscription and billing preferences.
                   </p>
                   <a
                     href="/settings/subscription"
-                    className="inline-flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors"
+                    className="inline-flex items-center justify-center w-full sm:w-auto px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors text-sm sm:text-base"
                   >
                     Go to Subscription Management
                   </a>
@@ -411,8 +411,8 @@ export default function SettingsPage() {
               {/* Branding Tab */}
               {activeTab === 'branding' && (
                 <div>
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Branding</h2>
-                  <p className="text-gray-600">Branding settings coming soon...</p>
+                  <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-3 sm:mb-4">Branding</h2>
+                  <p className="text-sm sm:text-base text-gray-600">Branding settings coming soon...</p>
                 </div>
               )}
             </div>

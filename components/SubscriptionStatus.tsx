@@ -141,16 +141,16 @@ export default function SubscriptionStatus({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
-      <div className="flex items-start justify-between mb-6">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 mb-6 sm:mb-8">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-4 sm:mb-6">
         <div>
-          <h3 className="text-xl font-semibold text-gray-900">
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900">
             Current Subscription
           </h3>
-          <p className="text-gray-600 mt-1">{subscription.plan.displayName} Plan</p>
+          <p className="text-sm sm:text-base text-gray-600 mt-1">{subscription.plan.displayName} Plan</p>
         </div>
         <span
-          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
+          className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${getStatusColor(
             subscription.status
           )}`}
         >
@@ -159,16 +159,16 @@ export default function SubscriptionStatus({
         </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-        <div className="flex items-start gap-3">
-          <div className="p-2 bg-teal-100 rounded-lg">
-            <CreditCard className="w-5 h-5 text-teal-600" />
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-4 sm:mb-6">
+        <div className="flex items-start gap-2 sm:gap-3">
+          <div className="p-2 bg-teal-100 rounded-lg flex-shrink-0">
+            <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600" />
           </div>
-          <div>
-            <p className="text-sm text-gray-600">
+          <div className="min-w-0 flex-1">
+            <p className="text-xs sm:text-sm text-gray-600">
               {subscription.plan.interval === 'year' ? 'Purchase Price' : 'Billing Amount'}
             </p>
-            <p className="text-lg font-semibold text-gray-900">
+            <p className="text-base sm:text-lg font-semibold text-gray-900 break-words">
               {subscription.plan.interval === 'year' 
                 ? formatPrice(subscription.plan.price, subscription.plan.currency)
                 : `${formatPrice(subscription.plan.price, subscription.plan.currency)}/${subscription.plan.interval === 'month' ? 'mo' : 'yr'}`}
@@ -176,15 +176,15 @@ export default function SubscriptionStatus({
           </div>
         </div>
 
-        <div className="flex items-start gap-3">
-          <div className="p-2 bg-blue-100 rounded-lg">
-            <Calendar className="w-5 h-5 text-blue-600" />
+        <div className="flex items-start gap-2 sm:gap-3">
+          <div className="p-2 bg-blue-100 rounded-lg flex-shrink-0">
+            <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-blue-600" />
           </div>
-          <div>
-            <p className="text-sm text-gray-600">
+          <div className="min-w-0 flex-1">
+            <p className="text-xs sm:text-sm text-gray-600">
               {subscription.plan.interval === 'year' ? 'Purchase Date' : 'Current Period'}
             </p>
-            <p className="text-lg font-semibold text-gray-900">
+            <p className="text-base sm:text-lg font-semibold text-gray-900 break-words">
               {subscription.plan.interval === 'year' 
                 ? formatDate(subscription.currentPeriodStart)
                 : `${formatDate(subscription.currentPeriodStart)} - ${formatDate(subscription.currentPeriodEnd)}`}
@@ -193,15 +193,15 @@ export default function SubscriptionStatus({
         </div>
 
         {(subscription.expiresAt || subscription.currentPeriodEnd) && (
-          <div className="flex items-start gap-3">
-            <div className="p-2 bg-orange-100 rounded-lg">
-              <Calendar className="w-5 h-5 text-orange-600" />
+          <div className="flex items-start gap-2 sm:gap-3 sm:col-span-2 lg:col-span-1">
+            <div className="p-2 bg-orange-100 rounded-lg flex-shrink-0">
+              <Calendar className="w-4 h-4 sm:w-5 sm:h-5 text-orange-600" />
             </div>
-            <div>
-              <p className="text-sm text-gray-600">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs sm:text-sm text-gray-600">
                 {subscription.plan.interval === 'year' ? 'Expires On' : 'Next Billing Date'}
               </p>
-              <p className="text-lg font-semibold text-gray-900">
+              <p className="text-base sm:text-lg font-semibold text-gray-900 break-words">
                 {formatDate(subscription.expiresAt || subscription.currentPeriodEnd)}
               </p>
             </div>
@@ -211,13 +211,13 @@ export default function SubscriptionStatus({
 
       {/* Renewal Prompt - Show when 3 months or less remaining */}
       {shouldShowRenewalPrompt() && (
-        <div className="bg-teal-50 border border-teal-200 rounded-lg p-4 mb-4">
-          <div className="flex items-start justify-between">
-            <div className="flex-1">
-              <p className="text-teal-900 font-medium mb-1">
+        <div className="bg-teal-50 border border-teal-200 rounded-lg p-3 sm:p-4 mb-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+            <div className="flex-1 min-w-0">
+              <p className="text-teal-900 font-medium mb-1 text-sm sm:text-base">
                 Renew Your Subscription
               </p>
-              <p className="text-teal-800 text-sm">
+              <p className="text-teal-800 text-xs sm:text-sm">
                 Your subscription expires on {formatDate(subscription.expiresAt || subscription.currentPeriodEnd)}. 
                 Renew now to continue enjoying uninterrupted access.
               </p>
@@ -225,7 +225,7 @@ export default function SubscriptionStatus({
             <button
               onClick={handleRenewal}
               disabled={renewing || showRenewalForm}
-              className="ml-4 px-4 py-2 text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+              className="w-full sm:w-auto px-4 py-2 text-xs sm:text-sm font-medium text-white bg-teal-600 rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 flex items-center justify-center gap-2"
             >
               <RefreshCw className="w-4 h-4" />
               {renewing ? 'Renewing...' : 'Renew Now'}

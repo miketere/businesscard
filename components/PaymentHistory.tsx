@@ -104,20 +104,20 @@ export default function PaymentHistory() {
 
   if (payments.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <div className="p-2 bg-teal-100 rounded-lg">
-            <Receipt className="w-6 h-6 text-teal-600" />
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+        <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+          <div className="p-2 bg-teal-100 rounded-lg flex-shrink-0">
+            <Receipt className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600" />
           </div>
           <div>
-            <h3 className="text-xl font-semibold text-gray-900">Payment History</h3>
-            <p className="text-sm text-gray-600">View all your past transactions</p>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Payment History</h3>
+            <p className="text-xs sm:text-sm text-gray-600">View all your past transactions</p>
           </div>
         </div>
-        <div className="text-center py-12">
-          <Receipt className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600 text-lg mb-2">No payments yet</p>
-          <p className="text-gray-500 text-sm">
+        <div className="text-center py-8 sm:py-12">
+          <Receipt className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-3 sm:mb-4" />
+          <p className="text-gray-600 text-base sm:text-lg mb-2">No payments yet</p>
+          <p className="text-gray-500 text-xs sm:text-sm px-4">
             Your payment history will appear here once you make a purchase.
           </p>
         </div>
@@ -126,35 +126,35 @@ export default function PaymentHistory() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <div className="flex items-center gap-3 mb-6">
-        <div className="p-2 bg-teal-100 rounded-lg">
-          <Receipt className="w-6 h-6 text-teal-600" />
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6">
+      <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+        <div className="p-2 bg-teal-100 rounded-lg flex-shrink-0">
+          <Receipt className="w-5 h-5 sm:w-6 sm:h-6 text-teal-600" />
         </div>
         <div>
-          <h3 className="text-xl font-semibold text-gray-900">Payment History</h3>
-          <p className="text-sm text-gray-600">View all your past transactions</p>
+          <h3 className="text-lg sm:text-xl font-semibold text-gray-900">Payment History</h3>
+          <p className="text-xs sm:text-sm text-gray-600">View all your past transactions</p>
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-3 sm:space-y-4">
         {payments.map((payment) => (
           <div
             key={payment.id}
-            className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
+            className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow"
           >
-            <div className="flex items-start justify-between mb-3">
-              <div className="flex items-start gap-3 flex-1">
-                <div className="p-2 bg-teal-50 rounded-lg">
-                  <CreditCard className="w-5 h-5 text-teal-600" />
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 mb-3">
+              <div className="flex items-start gap-2 sm:gap-3 flex-1 w-full sm:w-auto">
+                <div className="p-2 bg-teal-50 rounded-lg flex-shrink-0">
+                  <CreditCard className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600" />
                 </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h4 className="font-semibold text-gray-900">
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
+                    <h4 className="font-semibold text-sm sm:text-base text-gray-900">
                       {payment.plan.displayName} Plan
                     </h4>
                     <span
-                      className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                      className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-[10px] sm:text-xs font-medium w-fit ${getStatusColor(
                         payment.status
                       )}`}
                     >
@@ -163,10 +163,10 @@ export default function PaymentHistory() {
                     </span>
                   </div>
                   {payment.description && (
-                    <p className="text-sm text-gray-600 mb-1">{payment.description}</p>
+                    <p className="text-xs sm:text-sm text-gray-600 mb-1 break-words">{payment.description}</p>
                   )}
-                  <div className="flex items-center gap-4 text-xs text-gray-500 mt-2">
-                    <span>{formatDate(payment.createdAt)}</span>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4 text-[10px] sm:text-xs text-gray-500 mt-2">
+                    <span className="break-words">{formatDate(payment.createdAt)}</span>
                     {payment.paymentMethodType && (
                       <span className="capitalize">
                         {payment.paymentMethodType === 'card' ? '💳 Card' : payment.paymentMethodType}
@@ -175,12 +175,12 @@ export default function PaymentHistory() {
                   </div>
                 </div>
               </div>
-              <div className="text-right">
-                <p className="text-lg font-bold text-gray-900">
+              <div className="text-left sm:text-right w-full sm:w-auto pl-9 sm:pl-0">
+                <p className="text-base sm:text-lg font-bold text-gray-900">
                   {formatPrice(payment.amount, payment.currency)}
                 </p>
                 {payment.paidAt && (
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-[10px] sm:text-xs text-gray-500 mt-1">
                     Paid {formatDate(payment.paidAt)}
                   </p>
                 )}
@@ -188,7 +188,7 @@ export default function PaymentHistory() {
             </div>
             {payment.paymongoPaymentIntentId && (
               <div className="mt-3 pt-3 border-t border-gray-100">
-                <p className="text-xs text-gray-500">
+                <p className="text-[10px] sm:text-xs text-gray-500 break-all">
                   Payment ID: <span className="font-mono">{payment.paymongoPaymentIntentId}</span>
                 </p>
               </div>
