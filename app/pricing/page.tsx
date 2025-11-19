@@ -172,7 +172,7 @@ export default function PricingPage() {
               <span className="text-neutral-900">for Everyone</span>
             </h1>
             <p className="text-xl text-neutral-600 mb-8 max-w-2xl mx-auto">
-              Choose the plan that's right for you or your organization. Start free and upgrade as you grow.
+              Choose the plan that&apos;s right for you or your organization. Start free and upgrade as you grow.
             </p>
           </div>
         </div>
@@ -315,7 +315,7 @@ export default function PricingPage() {
             <div className="bg-gradient-to-r from-teal-600 to-orange-500 rounded-2xl p-8 text-center text-white mb-16">
               <h3 className="text-2xl font-bold mb-2">Over 100 Users?</h3>
               <p className="text-white/90 mb-6">
-                Looking for a company-wide rollout? If your team has 101 or more users, we'll work with you to deliver the best solution at the right price.
+                Looking for a company-wide rollout? If your team has 101 or more users, we&apos;ll work with you to deliver the best solution at the right price.
               </p>
               <Link
                 href="/support"

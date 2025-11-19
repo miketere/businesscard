@@ -235,7 +235,7 @@ export default function Home() {
               </div>
               <h3 className="text-2xl font-bold text-neutral-900 mb-4">Analytics Dashboard</h3>
               <p className="text-neutral-600 leading-relaxed">
-                Track views, shares, and engagement. Understand who's connecting with you.
+                Track views, shares, and engagement. Understand who&apos;s connecting with you.
               </p>
             </div>
 

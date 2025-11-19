@@ -77,7 +77,7 @@ export default function ContactList({ contacts }: { contacts: Contact[] }) {
 
               {contact.card && (
                 <div className="mt-3 pt-3 border-t text-xs text-gray-500">
-                  Met via: {contact.card.name}'s card
+                  Met via: {contact.card.name}&apos;s card
                 </div>
               )}
             </div>
