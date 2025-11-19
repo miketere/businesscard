@@ -148,11 +148,11 @@ export default function CardsGrid({ cards }: CardsGridProps) {
 
                 <div className="flex gap-2">
                   <Link
-                    href={`/card/${card.id}`}
+                    href={`/dashboard/card/${card.id}`}
                     className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl gradient-primary text-white font-medium hover:shadow-lg transition-all"
                   >
                     <Eye className="w-4 h-4" />
-                    View
+                    View Details
                   </Link>
                   <Link
                     href={`/edit/${card.id}`}
