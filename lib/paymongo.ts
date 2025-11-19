@@ -97,10 +97,11 @@ function getHeaders(usePublicKey = false): HeadersInit {
     : process.env.PAYMONGO_SECRET_KEY
   
   if (!apiKey) {
+    // Return a more helpful error message
+    const keyName = usePublicKey ? 'PAYMONGO_PUBLIC_KEY' : 'PAYMONGO_SECRET_KEY'
     throw new Error(
-      usePublicKey
-        ? 'PAYMONGO_PUBLIC_KEY is not set'
-        : 'PAYMONGO_SECRET_KEY is not set'
+      `${keyName} is not set. Please add it to your environment variables. ` +
+      `For subscriptions to work, you need to set both PAYMONGO_PUBLIC_KEY and PAYMONGO_SECRET_KEY in your Vercel environment variables.`
     )
   }
 
@@ -134,7 +135,7 @@ export async function createPaymentMethod(data: {
       country?: string
     }
   }
-}): Promise<PayMongoPaymentMethod> {
+}, usePublicKey = true): Promise<PayMongoPaymentMethod> {
   // Ensure card number is clean (digits only, no spaces)
   const cleanCardNumber = String(data.cardNumber || '').replace(/\s/g, '').replace(/\D/g, '').trim()
   
@@ -178,7 +179,7 @@ export async function createPaymentMethod(data: {
 
   const response = await fetch(`${PAYMONGO_API_BASE}/payment_methods`, {
     method: 'POST',
-    headers: getHeaders(true), // Use public key
+    headers: getHeaders(usePublicKey), // Use public key by default
     body: JSON.stringify(requestBody),
   })
 

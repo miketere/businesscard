@@ -83,6 +83,18 @@ export async function POST(request: NextRequest) {
     })
   } catch (error: any) {
     console.error('Error creating payment method:', error)
+    
+    // Check if it's a missing environment variable error
+    if (error.message?.includes('PAYMONGO_PUBLIC_KEY is not set')) {
+      return NextResponse.json(
+        {
+          error: 'Payment processing is not configured. Please contact support or check your environment variables.',
+          details: 'PAYMONGO_PUBLIC_KEY is required for payment processing.',
+        },
+        { status: 500 }
+      )
+    }
+    
     return NextResponse.json(
       {
         error:
