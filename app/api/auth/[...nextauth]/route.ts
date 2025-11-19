@@ -6,3 +6,5 @@ const nextAuth = NextAuth(authOptions)
 
 export const GET = nextAuth.handlers.GET
 export const POST = nextAuth.handlers.POST
+
+// Webhook verification test - remove after confirming deployment works
