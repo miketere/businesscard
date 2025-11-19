@@ -13,7 +13,7 @@ export const dynamic = 'force-dynamic'
 export default async function AnalyticsPage() {
   const session = await getSession()
   
-  if (!session || !session.user) {
+  if (!session || !session.user || !session.user.id) {
     redirect('/auth/signin?callbackUrl=/analytics')
   }
 

@@ -1,3 +1,4 @@
+import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { prisma } from '@/lib/prisma'
@@ -29,7 +30,7 @@ if (!process.env.NEXTAUTH_URL) {
   throw new Error('NEXTAUTH_URL is required')
 }
 
-export const authOptions = {
+const authOptions = {
   adapter: PrismaAdapter(prisma) as any,
   providers: [
     GoogleProvider({
@@ -54,4 +55,7 @@ export const authOptions = {
     strategy: 'database' as const,
   },
 }
+
+// Export NextAuth with handlers
+export const { handlers, auth, signIn, signOut } = NextAuth(authOptions)
 

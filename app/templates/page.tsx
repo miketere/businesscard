@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation'
 export default async function TemplatesPage() {
   const session = await getSession()
   
-  if (!session || !session.user) {
+  if (!session || !session.user || !session.user.id) {
     redirect('/auth/signin?callbackUrl=/templates')
   }
 

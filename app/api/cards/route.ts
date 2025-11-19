@@ -34,6 +34,10 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    if (!session.user.id) {
+      return NextResponse.json({ error: 'User ID not found' }, { status: 401 })
+    }
+
     const userId = session.user.id
 
     // Check if user can create more cards
