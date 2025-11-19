@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createPaymentMethod } from '@/lib/paymongo'
+import { getSession } from '@/lib/auth'
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,6 +13,10 @@ export async function POST(request: NextRequest) {
       cvc,
       billing,
     } = body
+
+    // Get user session to use email as fallback
+    const session = await getSession()
+    const userEmail = session?.user?.email
 
     if (!type || !cardNumber || !expMonth || !expYear || !cvc) {
       return NextResponse.json(
@@ -59,6 +64,16 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Prepare billing with email fallback to user's login email
+    const billingWithEmail = billing
+      ? {
+          ...billing,
+          email: billing.email || userEmail || undefined,
+        }
+      : userEmail
+        ? { email: userEmail }
+        : undefined
+
     // Create payment method in PayMongo
     const paymentMethod = await createPaymentMethod({
       type: 'card',
@@ -66,7 +81,7 @@ export async function POST(request: NextRequest) {
       expMonth: parseInt(expMonth),
       expYear: parseInt(expYear),
       cvc,
-      billing,
+      billing: billingWithEmail,
     })
 
     return NextResponse.json({

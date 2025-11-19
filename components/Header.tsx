@@ -1,11 +1,12 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { User, ChevronRight, Menu } from 'lucide-react'
+import { usePathname, useRouter } from 'next/navigation'
+import { User, ChevronRight, Menu, LogOut } from 'lucide-react'
 import { useDevice } from '@/hooks/useDevice'
 import { useState } from 'react'
 import MobileMenu from './MobileMenu'
+import toast from 'react-hot-toast'
 
 interface HeaderProps {
   breadcrumbs?: { label: string; href?: string }[]
@@ -15,8 +16,29 @@ interface HeaderProps {
 
 export default function Header({ breadcrumbs, userEmail = 'user@example.com', userName = 'User' }: HeaderProps) {
   const pathname = usePathname()
+  const router = useRouter()
   const { isDesktop } = useDevice()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [showUserMenu, setShowUserMenu] = useState(false)
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/signout', {
+        method: 'POST',
+      })
+
+      if (response.ok) {
+        toast.success('Logged out successfully')
+        router.push('/auth/signin')
+        router.refresh()
+      } else {
+        throw new Error('Failed to logout')
+      }
+    } catch (error) {
+      console.error('Error logging out:', error)
+      toast.error('Failed to logout')
+    }
+  }
 
   const getBreadcrumbs = (): { label: string; href?: string }[] => {
     if (breadcrumbs) return breadcrumbs
@@ -71,9 +93,12 @@ export default function Header({ breadcrumbs, userEmail = 'user@example.com', us
           ))}
         </nav>
 
-        {/* User Profile */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-3">
+        {/* User Profile with Dropdown */}
+        <div className="relative flex items-center gap-3">
+          <button
+            onClick={() => setShowUserMenu(!showUserMenu)}
+            className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+          >
             <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center text-white font-semibold shadow-md">
               {userInitial}
             </div>
@@ -81,7 +106,37 @@ export default function Header({ breadcrumbs, userEmail = 'user@example.com', us
               <div className="text-neutral-900 font-semibold text-sm">{userName}</div>
               <div className="text-neutral-500 text-xs">{userEmail}</div>
             </div>
-          </div>
+          </button>
+          
+          {/* User Menu Dropdown */}
+          {showUserMenu && (
+            <>
+              <div
+                className="fixed inset-0 z-40"
+                onClick={() => setShowUserMenu(false)}
+              />
+              <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-neutral-200 py-2 z-50">
+                <Link
+                  href="/settings"
+                  onClick={() => setShowUserMenu(false)}
+                  className="flex items-center gap-3 px-4 py-2 text-neutral-700 hover:bg-neutral-50 transition-colors"
+                >
+                  <User className="w-4 h-4" />
+                  <span className="text-sm">Settings</span>
+                </Link>
+                <button
+                  onClick={() => {
+                    setShowUserMenu(false)
+                    handleLogout()
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-50 transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span className="text-sm">Logout</span>
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </header>
       <MobileMenu isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
