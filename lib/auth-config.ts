@@ -26,16 +26,15 @@ if (!process.env.NEXTAUTH_SECRET) {
   throw new Error('NEXTAUTH_SECRET is required')
 }
 
-if (!process.env.NEXTAUTH_URL) {
-  throw new Error('NEXTAUTH_URL is required')
-}
+// NEXTAUTH_URL is optional in NextAuth v5 - it auto-detects from request headers
+// Only validate in production if explicitly needed
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma) as any,
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   callbacks: {
@@ -54,8 +53,7 @@ export const authOptions = {
   session: {
     strategy: 'database' as const,
   },
+  // Trust host header in production (Vercel)
+  trustHost: true,
 }
-
-// Export authOptions for use in route handler
-// Note: handlers are created in the route file, not here
 

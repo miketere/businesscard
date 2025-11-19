@@ -1,13 +1,8 @@
-import NextAuth from 'next-auth'
-import { authOptions } from '@/lib/auth-config'
 import { prisma } from '@/lib/prisma'
 import { cookies } from 'next/headers'
 
-// Create auth instance
-const { auth } = NextAuth(authOptions)
-
-// Export auth function for use in server components
-export { auth }
+// Note: We use getSession() for database sessions instead of NextAuth's auth()
+// This avoids creating multiple NextAuth instances which can cause constructor errors
 
 // Custom getSession for database sessions (manual implementation)
 export async function getSession() {
