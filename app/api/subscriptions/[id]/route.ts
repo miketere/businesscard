@@ -78,6 +78,14 @@ export async function PUT(
       )
     }
 
+    // Check if subscription has PayMongo subscription ID
+    if (!currentSubscription.paymongoSubscriptionId) {
+      return NextResponse.json(
+        { error: 'Subscription does not have a PayMongo subscription ID' },
+        { status: 400 }
+      )
+    }
+
     // Update subscription in PayMongo
     const paymongoSubscription = await updateSubscription(
       currentSubscription.paymongoSubscriptionId,
