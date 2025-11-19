@@ -4,6 +4,8 @@
 
 Your code has been pushed to GitHub: `https://github.com/miketere/businesscard`
 
+> **📖 For complete deployment guide with all environment variables, see [VERCEL_DEPLOY_COMPLETE.md](./VERCEL_DEPLOY_COMPLETE.md)**
+
 ## 🚀 Deploy to Vercel - Follow These Steps
 
 ### Step 1: Go to Vercel
