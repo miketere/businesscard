@@ -1,12 +1,12 @@
 import { prisma } from '@/lib/prisma'
-
-// Force dynamic rendering to avoid build-time database access
-export const dynamic = 'force-dynamic'
 import { getCardAnalytics } from '@/lib/analytics'
 import { checkFeatureAccess } from '@/lib/subscription'
 import AnalyticsDashboard from '@/components/AnalyticsDashboard'
 import Header from '@/components/Header'
 import Link from 'next/link'
+
+// Force dynamic rendering to avoid build-time database access
+export const dynamic = 'force-dynamic'
 
 const TEMP_USER_ID = 'temp-user-id'
 
