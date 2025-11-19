@@ -18,11 +18,11 @@ export default function Header({ breadcrumbs, userEmail = 'user@example.com', us
   const { isDesktop } = useDevice()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
-  const getBreadcrumbs = () => {
+  const getBreadcrumbs = (): { label: string; href?: string }[] => {
     if (breadcrumbs) return breadcrumbs
 
     const pathSegments = pathname?.split('/').filter(Boolean) || []
-    const crumbs = [{ label: 'Home', href: '/' }]
+    const crumbs: { label: string; href?: string }[] = [{ label: 'Home', href: '/' }]
 
     let currentPath = ''
     pathSegments.forEach((segment, index) => {
