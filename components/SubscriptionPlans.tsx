@@ -10,6 +10,7 @@ const PLAN_TIERS: Record<string, number> = {
   free: 0,
   basic: 1,
   pro: 2,
+  enterprise: 3,
 }
 
 interface Plan {
@@ -178,6 +179,8 @@ export default function SubscriptionPlans({
         return <Shield className="w-6 h-6" />
       case 'pro':
         return <Crown className="w-6 h-6" />
+      case 'enterprise':
+        return <Shield className="w-6 h-6" />
       default:
         return <Crown className="w-6 h-6" />
     }
@@ -191,6 +194,8 @@ export default function SubscriptionPlans({
         return 'border-teal-300'
       case 'pro':
         return 'border-orange-400 border-2'
+      case 'enterprise':
+        return 'border-gray-200'
       default:
         return 'border-gray-200'
     }
@@ -235,7 +240,7 @@ export default function SubscriptionPlans({
         />
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {plans.map((plan) => {
         const isCurrent = plan.id === currentPlanId
         const isPro = plan.name.toLowerCase() === 'pro'

@@ -63,6 +63,7 @@ export default function PricingPage() {
   const personalPlan = plans.find(p => p.name.toLowerCase() === 'free')
   const professionalPlan = plans.find(p => p.name.toLowerCase() === 'basic')
   const businessPlan = plans.find(p => p.name.toLowerCase() === 'pro')
+  const enterprisePlan = plans.find(p => p.name.toLowerCase() === 'enterprise')
 
   const features = {
     personal: [
@@ -283,32 +284,61 @@ export default function PricingPage() {
               )}
 
               {/* Enterprise Plan */}
-              <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 shadow-sm hover:shadow-lg transition-shadow">
-                <div className="mb-6">
-                  <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center mb-4">
-                    <Building2 className="w-6 h-6 text-gray-600" />
+              {enterprisePlan ? (
+                <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 shadow-sm hover:shadow-lg transition-shadow">
+                  <div className="mb-6">
+                    <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center mb-4">
+                      <Building2 className="w-6 h-6 text-gray-600" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Enterprise</h3>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-4xl font-bold text-gray-900">Custom</span>
+                    </div>
+                    <p className="text-sm text-gray-600 mt-2">Scale securely, stay on-brand</p>
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-2">Enterprise</h3>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold text-gray-900">Custom</span>
-                  </div>
-                  <p className="text-sm text-gray-600 mt-2">Scale securely, stay on-brand</p>
+                  <ul className="space-y-3 mb-8">
+                    {features.enterprise.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <Check className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
+                        <span className="text-sm text-gray-700">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/support"
+                    className="block w-full text-center px-6 py-3 rounded-xl bg-gray-100 text-gray-900 font-semibold hover:bg-gray-200 transition-colors"
+                  >
+                    Contact us
+                  </Link>
                 </div>
-                <ul className="space-y-3 mb-8">
-                  {features.enterprise.map((feature, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <Check className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-sm text-gray-700">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/support"
-                  className="block w-full text-center px-6 py-3 rounded-xl bg-gray-100 text-gray-900 font-semibold hover:bg-gray-200 transition-colors"
-                >
-                  Contact us
-                </Link>
-              </div>
+              ) : (
+                <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 shadow-sm hover:shadow-lg transition-shadow">
+                  <div className="mb-6">
+                    <div className="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center mb-4">
+                      <Building2 className="w-6 h-6 text-gray-600" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-2">Enterprise</h3>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-4xl font-bold text-gray-900">Custom</span>
+                    </div>
+                    <p className="text-sm text-gray-600 mt-2">Scale securely, stay on-brand</p>
+                  </div>
+                  <ul className="space-y-3 mb-8">
+                    {features.enterprise.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <Check className="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5" />
+                        <span className="text-sm text-gray-700">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    href="/support"
+                    className="block w-full text-center px-6 py-3 rounded-xl bg-gray-100 text-gray-900 font-semibold hover:bg-gray-200 transition-colors"
+                  >
+                    Contact us
+                  </Link>
+                </div>
+              )}
             </div>
 
             {/* Enterprise CTA */}

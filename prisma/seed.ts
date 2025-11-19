@@ -5,18 +5,18 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('Seeding subscription plans...')
 
-  // Create Free Plan (no PayMongo plan needed for free tier)
+  // Create Personal Plan (Free)
   const freePlan = await prisma.subscriptionPlan.upsert({
     where: { name: 'free' },
     update: {},
     create: {
       name: 'free',
-      displayName: 'Free',
+      displayName: 'Personal',
       price: 0,
-      currency: 'PHP',
+      currency: 'USD',
       interval: 'month',
-      maxCards: 1,
-      maxContacts: 10,
+      maxCards: 4,
+      maxContacts: 50,
       hasAnalytics: false,
       hasIntegrations: false,
       hasCustomBranding: false,
@@ -24,8 +24,7 @@ async function main() {
     },
   })
 
-  // Note: We're using Payment Intents for one-time payments, so no PayMongo plans needed
-  // Check if Basic plan already exists
+  // Check if Basic plan already exists (Professional)
   const existingBasic = await prisma.subscriptionPlan.findUnique({
     where: { name: 'basic' },
   })
@@ -38,21 +37,20 @@ async function main() {
     } : {},
     create: {
       name: 'basic',
-      displayName: 'Basic',
-      price: 299000, // ₱2,990.00 for 1 year (was ₱299/month)
-      currency: 'PHP',
-      interval: 'year',
-      maxCards: 5,
-      maxContacts: 100,
+      displayName: 'Professional',
+      price: 800, // $8/month in cents
+      currency: 'USD',
+      interval: 'month',
+      maxCards: 16,
+      maxContacts: 500,
       hasAnalytics: true,
       hasIntegrations: false,
-      hasCustomBranding: false,
+      hasCustomBranding: true,
       paymongoPlanId: basicPaymongoPlanId,
     },
   })
 
-  // Note: We're using Payment Intents for one-time payments, so no PayMongo plans needed
-  // Check if Pro plan already exists
+  // Check if Pro plan already exists (Business)
   const existingPro = await prisma.subscriptionPlan.findUnique({
     where: { name: 'pro' },
   })
@@ -65,10 +63,10 @@ async function main() {
     } : {},
     create: {
       name: 'pro',
-      displayName: 'Pro',
-      price: 799000, // ₱7,990.00 for 1 year (was ₱799/month)
-      currency: 'PHP',
-      interval: 'year',
+      displayName: 'Business',
+      price: 600, // $6/user/month in cents (minimum 5 users = $30/month)
+      currency: 'USD',
+      interval: 'month',
       maxCards: -1, // Unlimited
       maxContacts: -1, // Unlimited
       hasAnalytics: true,
@@ -78,10 +76,37 @@ async function main() {
     },
   })
 
-  console.log('Seeded plans:', { freePlan, basicPlan, proPlan })
+  // Create Enterprise Plan
+  const existingEnterprise = await prisma.subscriptionPlan.findUnique({
+    where: { name: 'enterprise' },
+  })
+  const enterprisePaymongoPlanId = existingEnterprise?.paymongoPlanId || null
+
+  const enterprisePlan = await prisma.subscriptionPlan.upsert({
+    where: { name: 'enterprise' },
+    update: enterprisePaymongoPlanId ? {
+      paymongoPlanId: enterprisePaymongoPlanId,
+    } : {},
+    create: {
+      name: 'enterprise',
+      displayName: 'Enterprise',
+      price: 0, // Custom pricing
+      currency: 'USD',
+      interval: 'month',
+      maxCards: -1, // Unlimited
+      maxContacts: -1, // Unlimited
+      hasAnalytics: true,
+      hasIntegrations: true,
+      hasCustomBranding: true,
+      paymongoPlanId: enterprisePaymongoPlanId,
+    },
+  })
+
+  console.log('Seeded plans:', { freePlan, basicPlan, proPlan, enterprisePlan })
   console.log('PayMongo Plan IDs:', {
     basic: basicPaymongoPlanId,
     pro: proPaymongoPlanId,
+    enterprise: enterprisePaymongoPlanId,
   })
 }
 

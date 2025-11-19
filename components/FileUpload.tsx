@@ -45,10 +45,29 @@ export default function FileUpload({ currentImage, onUpload, folder, buttonText 
         onUpload(data.url)
         toast.success('Image uploaded!')
       } else {
-        throw new Error(data.error || 'Upload failed')
+        // Show detailed error message
+        const errorMessage = data.error || 'Upload failed'
+        const errorCode = data.code || ''
+        
+        if (errorCode === 'VERCEL_FILESYSTEM_READONLY' || errorCode === 'SUPABASE_NOT_CONFIGURED') {
+          toast.error('File uploads require Supabase Storage configuration. Please check your environment variables.', {
+            duration: 6000,
+          })
+        } else {
+          toast.error(errorMessage, {
+            duration: 5000,
+          })
+        }
+        throw new Error(errorMessage)
       }
     } catch (error: any) {
-      toast.error(error.message || 'Upload failed')
+      // Only show toast if it's not already shown above
+      if (!error.message || !error.message.includes('Upload failed')) {
+        toast.error(error.message || 'Upload failed. Please try again.', {
+          duration: 5000,
+        })
+      }
+      console.error('Upload error:', error)
     } finally {
       setUploading(false)
     }

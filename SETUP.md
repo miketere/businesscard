@@ -15,6 +15,12 @@ Create a `.env` file in the root directory with the following:
 ```env
 DATABASE_URL="file:./dev.db"
 NEXT_PUBLIC_URL="http://localhost:3000"
+
+# Supabase Storage (Required for file uploads on Vercel, optional for local development)
+# Get these from https://app.supabase.com → Settings → API
+NEXT_PUBLIC_SUPABASE_URL="https://xxxxx.supabase.co"
+NEXT_PUBLIC_SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
 SMTP_HOST="smtp.gmail.com"
 SMTP_PORT=587
 SMTP_USER="your-email@gmail.com"
@@ -28,6 +34,7 @@ PAYMONGO_WEBHOOK_SECRET="whsec_xxxxxxxxxxxxx"
 ```
 
 **Notes**: 
+- **Supabase Storage**: Required for file uploads on Vercel. For local development, files are saved to `public/` directory if not configured. See [SETUP_SUPABASE_STORAGE.md](./SETUP_SUPABASE_STORAGE.md) for setup instructions.
 - Email configuration is optional. The app will work without it, but email sharing won't function.
 - PayMongo keys are required for subscription functionality. Get them from [PayMongo Dashboard](https://dashboard.paymongo.com/).
 - For subscriptions to work, you need to contact PayMongo support to enable subscription features on your account.
@@ -69,8 +76,10 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 - Check that the `.env` file has `DATABASE_URL` set correctly
 
 ### Image Upload Issues
-- Ensure the `public/uploads`, `public/profiles`, and `public/logos` directories exist
-- Check file permissions
+- **Local Development**: Ensure the `public/uploads`, `public/profiles`, and `public/logos` directories exist
+- **Vercel/Production**: Configure Supabase Storage (see [SETUP_SUPABASE_STORAGE.md](./SETUP_SUPABASE_STORAGE.md))
+- Check file permissions (local only)
+- Verify Supabase Storage bucket is created and public (for production)
 
 ### Email Not Working
 - Verify SMTP credentials in `.env`
@@ -81,6 +90,6 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 
 - Customize templates in `components/CardTemplates/`
 - Add authentication (currently uses temporary user ID)
+- **Set up Supabase Storage** for file uploads (see [SETUP_SUPABASE_STORAGE.md](./SETUP_SUPABASE_STORAGE.md))
 - Deploy to production (Vercel, Netlify, etc.)
-- Set up cloud storage for images (AWS S3, Cloudinary)
 
