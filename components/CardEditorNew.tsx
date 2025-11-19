@@ -30,6 +30,8 @@ interface CardData {
   website: string
   address: string
   bio: string
+  profileImage?: string | null
+  logo?: string | null
   primaryColor: string
   secondaryColor: string
   template: string
@@ -132,9 +134,20 @@ export default function CardEditorNew({ cardId, initialData }: { cardId?: string
         <div className="w-full max-w-md">
           <CardPreview
             cardData={{
-              ...cardData,
+              name: cardData.name,
+              title: cardData.title,
+              company: cardData.company,
+              email: cardData.email,
+              phone: cardData.phone,
+              website: cardData.website,
+              address: cardData.address,
+              bio: cardData.bio,
               profileImage: profileImage || undefined,
               logo: logo || undefined,
+              primaryColor: cardData.primaryColor,
+              secondaryColor: cardData.secondaryColor,
+              template: cardData.template,
+              socialLinks: cardData.socialLinks,
             }}
             showQR={false}
           />
@@ -180,6 +193,13 @@ export default function CardEditorNew({ cardId, initialData }: { cardId?: string
                 />
 
                 <FontSelector
+                  fonts={[
+                    { id: 'nunito', name: 'Nunito Sans', family: 'Nunito Sans, sans-serif' },
+                    { id: 'inter', name: 'Inter', family: 'Inter, sans-serif' },
+                    { id: 'roboto', name: 'Roboto', family: 'Roboto, sans-serif' },
+                    { id: 'opensans', name: 'Open Sans', family: 'Open Sans, sans-serif' },
+                    { id: 'lato', name: 'Lato', family: 'Lato, sans-serif' },
+                  ]}
                   selected={selectedFont}
                   onSelect={setSelectedFont}
                 />

@@ -58,7 +58,7 @@ export default function Header({ breadcrumbs, userEmail = 'user@example.com', us
           {crumbs.map((crumb, index) => (
             <div key={index} className="flex items-center gap-2">
               {crumb.href ? (
-                <Link href={crumb.href} className="hover:text-teal-600 transition-colors">
+                <Link href={crumb.href as string} className="hover:text-teal-600 transition-colors">
                   {crumb.label}
                 </Link>
               ) : (

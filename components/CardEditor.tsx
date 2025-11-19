@@ -25,6 +25,8 @@ interface CardData {
   website: string
   address: string
   bio: string
+  profileImage?: string | null
+  logo?: string | null
   primaryColor: string
   secondaryColor: string
   template: string
@@ -274,9 +276,20 @@ export default function CardEditor({ cardId, initialData }: { cardId?: string; i
           <CardPreview
             key={`preview-${cardData.name}-${cardData.title}-${cardData.company}-${cardData.email}`}
             cardData={{
-              ...cardData,
+              name: cardData.name,
+              title: cardData.title,
+              company: cardData.company,
+              email: cardData.email,
+              phone: cardData.phone,
+              website: cardData.website,
+              address: cardData.address,
+              bio: cardData.bio,
               profileImage: profileImage || undefined,
               logo: logo || undefined,
+              primaryColor: cardData.primaryColor,
+              secondaryColor: cardData.secondaryColor,
+              template: cardData.template,
+              socialLinks: cardData.socialLinks,
             }}
             cardUrl={cardUrl}
           />
