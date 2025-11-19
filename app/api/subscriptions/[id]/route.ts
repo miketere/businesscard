@@ -141,6 +141,14 @@ export async function DELETE(
       )
     }
 
+    // Check if subscription has PayMongo subscription ID
+    if (!subscription.paymongoSubscriptionId) {
+      return NextResponse.json(
+        { error: 'Subscription does not have a PayMongo subscription ID' },
+        { status: 400 }
+      )
+    }
+
     // Cancel subscription in PayMongo
     const paymongoSubscription = await cancelSubscription(
       subscription.paymongoSubscriptionId
