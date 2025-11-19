@@ -109,6 +109,31 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       )
     }
+
+    // Check if it's an invalid API key error
+    if (error.message?.includes('api_key_invalid') || error.message?.includes('API key') && error.message?.includes('invalid')) {
+      return NextResponse.json(
+        {
+          error: 'Invalid PayMongo API key. Please verify your API keys in Vercel environment variables.',
+          details: 'Your PAYMONGO_PUBLIC_KEY or PAYMONGO_SECRET_KEY may be incorrect, expired, or revoked. ' +
+                   'Please check your keys at https://dashboard.paymongo.com/developers/api-keys and update them in Vercel.',
+          help: 'Make sure you are using the correct keys (test keys start with pk_test_/sk_test_, live keys start with pk_live_/sk_live_)',
+        },
+        { status: 500 }
+      )
+    }
+
+    // Check if it's a key format error
+    if (error.message?.includes('format is invalid')) {
+      return NextResponse.json(
+        {
+          error: 'PayMongo API key format is invalid.',
+          details: error.message,
+          help: 'Please check your keys at https://dashboard.paymongo.com/developers/api-keys',
+        },
+        { status: 500 }
+      )
+    }
     
     return NextResponse.json(
       {

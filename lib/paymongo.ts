@@ -105,8 +105,32 @@ function getHeaders(usePublicKey = false): HeadersInit {
     )
   }
 
+  // Clean the API key (remove whitespace, newlines, etc.)
+  const cleanedKey = apiKey.trim().replace(/\s/g, '')
+
+  // Validate key format
+  if (usePublicKey) {
+    // Public keys should start with pk_test_ or pk_live_
+    if (!cleanedKey.startsWith('pk_test_') && !cleanedKey.startsWith('pk_live_')) {
+      throw new Error(
+        'PAYMONGO_PUBLIC_KEY format is invalid. ' +
+        'Public keys should start with "pk_test_" (for test mode) or "pk_live_" (for live mode). ' +
+        'Please check your key in the PayMongo dashboard: https://dashboard.paymongo.com/developers/api-keys'
+      )
+    }
+  } else {
+    // Secret keys should start with sk_test_ or sk_live_
+    if (!cleanedKey.startsWith('sk_test_') && !cleanedKey.startsWith('sk_live_')) {
+      throw new Error(
+        'PAYMONGO_SECRET_KEY format is invalid. ' +
+        'Secret keys should start with "sk_test_" (for test mode) or "sk_live_" (for live mode). ' +
+        'Please check your key in the PayMongo dashboard: https://dashboard.paymongo.com/developers/api-keys'
+      )
+    }
+  }
+
   return {
-    'Authorization': `Basic ${Buffer.from(apiKey + ':').toString('base64')}`,
+    'Authorization': `Basic ${Buffer.from(cleanedKey + ':').toString('base64')}`,
     'Content-Type': 'application/json',
   }
 }
@@ -185,6 +209,20 @@ export async function createPaymentMethod(data: {
 
   if (!response.ok) {
     const error = await response.json().catch(() => ({}))
+    
+    // Check for specific PayMongo error codes
+    if (error.errors && Array.isArray(error.errors)) {
+      const errorMessages = error.errors.map((err: any) => {
+        if (err.code === 'api_key_invalid') {
+          return `Invalid API key. Please verify your ${usePublicKey ? 'PAYMONGO_PUBLIC_KEY' : 'PAYMONGO_SECRET_KEY'} in Vercel environment variables. ` +
+                 `Check your keys at https://dashboard.paymongo.com/developers/api-keys`
+        }
+        return err.detail || err.code || 'Unknown error'
+      }).join('; ')
+      
+      throw new Error(`PayMongo API error: ${errorMessages}`)
+    }
+    
     throw new Error(`PayMongo API error: ${JSON.stringify(error)}`)
   }
 
