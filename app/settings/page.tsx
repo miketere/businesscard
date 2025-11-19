@@ -109,8 +109,14 @@ export default function SettingsPage() {
 
           {/* Tabs */}
           <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-neutral-200/50 shadow-sm mb-6">
-            <div className="border-b border-neutral-200">
-              <nav className="flex space-x-2 sm:space-x-4 md:space-x-8 px-2 sm:px-4 md:px-6 overflow-x-auto scrollbar-hide" aria-label="Tabs">
+            <div className="border-b border-neutral-200 overflow-hidden">
+              <nav 
+                className="flex space-x-2 sm:space-x-4 md:space-x-8 px-2 sm:px-4 md:px-6 overflow-x-auto overflow-y-hidden hide-scrollbar" 
+                style={{
+                  WebkitOverflowScrolling: 'touch'
+                } as React.CSSProperties}
+                aria-label="Tabs"
+              >
                 {tabs.map((tab) => {
                   const Icon = tab.icon
                   const isActive = activeTab === tab.id
@@ -119,7 +125,7 @@ export default function SettingsPage() {
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id)}
                       className={`
-                        flex items-center gap-1 sm:gap-2 py-3 sm:py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap
+                        flex items-center gap-1 sm:gap-2 py-3 sm:py-4 px-3 sm:px-4 border-b-2 font-medium text-xs sm:text-sm transition-colors whitespace-nowrap flex-shrink-0
                         ${
                           isActive
                             ? 'border-teal-600 text-teal-600'
@@ -127,11 +133,11 @@ export default function SettingsPage() {
                         }
                       `}
                     >
-                      <Icon className="w-3 h-3 sm:w-4 sm:h-4" />
+                      <Icon className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                       <span className="hidden sm:inline">{tab.label}</span>
                       <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
                       {tab.isPro && (
-                        <span className="ml-1 text-[10px] sm:text-xs bg-orange-100 text-orange-700 px-1.5 sm:px-2 py-0.5 rounded-full font-semibold">
+                        <span className="ml-1 text-[10px] sm:text-xs bg-orange-100 text-orange-700 px-1.5 sm:px-2 py-0.5 rounded-full font-semibold flex-shrink-0">
                           PRO
                         </span>
                       )}
