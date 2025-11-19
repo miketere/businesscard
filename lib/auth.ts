@@ -8,9 +8,13 @@ import { cookies } from 'next/headers'
 export async function getSession() {
   try {
     // For NextAuth v5 with database sessions, we need to get the session token from cookies
+    // NextAuth v5 may use different cookie names depending on environment
     const cookieStore = await cookies()
-    const sessionToken = cookieStore.get('next-auth.session-token')?.value || 
-                         cookieStore.get('__Secure-next-auth.session-token')?.value
+    const sessionToken = 
+      cookieStore.get('next-auth.session-token')?.value ||
+      cookieStore.get('__Secure-next-auth.session-token')?.value ||
+      cookieStore.get('authjs.session-token')?.value ||
+      cookieStore.get('__Secure-authjs.session-token')?.value
 
     if (!sessionToken) {
       return null

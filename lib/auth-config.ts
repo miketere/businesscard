@@ -41,7 +41,7 @@ export const authOptions = {
   callbacks: {
     async session({ session, user }: any) {
       // For database sessions, user is passed in the session callback
-      if (session.user && user) {
+      if (session?.user && user) {
         session.user.id = user.id
       }
       return session
