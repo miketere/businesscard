@@ -57,7 +57,7 @@ export default function SyncPlansPage() {
           toast.error(`Sync failed. ${errorMessages}`, { duration: 8000 })
           console.error('Sync errors:', data.errors)
         } else {
-          toast.info(data.message || 'No plans to sync')
+          toast(data.message || 'No plans to sync')
         }
       } else {
         toast.error(data.error || 'Failed to sync plans')
