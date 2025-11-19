@@ -74,9 +74,6 @@ export default function SubscriptionPage() {
         </p>
       </div>
 
-      {/* Current Subscription Status */}
-      {subscription && <SubscriptionStatus subscription={subscription} onUpdate={fetchSubscription} />}
-
       {/* Payment History */}
       <div className="mt-8 sm:mt-12">
         <PaymentHistory />

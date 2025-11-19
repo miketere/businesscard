@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { User, ChevronRight, Menu, LogOut } from 'lucide-react'
 import { useDevice } from '@/hooks/useDevice'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import MobileMenu from './MobileMenu'
 import toast from 'react-hot-toast'
 
@@ -14,12 +14,52 @@ interface HeaderProps {
   userName?: string
 }
 
-export default function Header({ breadcrumbs, userEmail = 'user@example.com', userName = 'User' }: HeaderProps) {
+// Function to mask email address
+function maskEmail(email: string): string {
+  if (!email || !email.includes('@')) return email
+  
+  const [localPart, domain] = email.split('@')
+  if (localPart.length <= 2) {
+    return `${localPart[0]}***@${domain}`
+  }
+  
+  // Show first 2 characters and last character before @
+  const visibleStart = localPart.substring(0, 2)
+  const visibleEnd = localPart.length > 3 ? localPart.substring(localPart.length - 1) : ''
+  const masked = visibleStart + '***' + visibleEnd
+  
+  return `${masked}@${domain}`
+}
+
+export default function Header({ breadcrumbs, userEmail, userName }: HeaderProps) {
   const pathname = usePathname()
   const router = useRouter()
   const { isDesktop } = useDevice()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [userData, setUserData] = useState<{ name: string; email: string } | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // Fetch user data from session
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('/api/user')
+        if (response.ok) {
+          const data = await response.json()
+          setUserData({
+            name: data.name || 'User',
+            email: data.email || '',
+          })
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchUserData()
+  }, [])
 
   const handleLogout = async () => {
     try {
@@ -60,7 +100,12 @@ export default function Header({ breadcrumbs, userEmail = 'user@example.com', us
   }
 
   const crumbs = getBreadcrumbs()
-  const userInitial = userName.charAt(0).toUpperCase()
+  
+  // Use fetched user data or fallback to props
+  const displayName = userData?.name || userName || 'User'
+  const displayEmail = userData?.email || userEmail || 'user@example.com'
+  const maskedEmail = maskEmail(displayEmail)
+  const userInitial = displayName.charAt(0).toUpperCase()
 
   return (
     <>
@@ -103,8 +148,8 @@ export default function Header({ breadcrumbs, userEmail = 'user@example.com', us
               {userInitial}
             </div>
             <div className="hidden md:block">
-              <div className="text-neutral-900 font-semibold text-sm">{userName}</div>
-              <div className="text-neutral-500 text-xs">{userEmail}</div>
+              <div className="text-neutral-900 font-semibold text-sm">{displayName}</div>
+              <div className="text-neutral-500 text-xs">{maskedEmail}</div>
             </div>
           </button>
           
