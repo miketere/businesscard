@@ -13,8 +13,10 @@ if (!process.env.GOOGLE_CLIENT_SECRET) {
 if (!process.env.NEXTAUTH_SECRET) {
   console.error('❌ NEXTAUTH_SECRET is missing. Please set it in your environment variables.')
 }
+// NEXTAUTH_URL is optional in NextAuth v5 - it auto-detects from request headers
+// Only log a warning, don't throw error
 if (!process.env.NEXTAUTH_URL) {
-  console.error('❌ NEXTAUTH_URL is missing. Please set it in your environment variables.')
+  console.warn('⚠️ NEXTAUTH_URL is not set. NextAuth v5 will auto-detect from request headers.')
 }
 
 // Validate and throw early if critical env vars are missing
