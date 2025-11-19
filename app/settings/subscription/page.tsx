@@ -12,6 +12,7 @@ interface Subscription {
   status: string
   currentPeriodStart: string | null
   currentPeriodEnd: string | null
+  expiresAt: string | null
   cancelAtPeriodEnd: boolean
   plan: {
     id: string
