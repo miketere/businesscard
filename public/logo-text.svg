@@ -1,0 +1,37 @@
+<svg width="200" height="80" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Card (darker blue, behind) -->
+  <rect x="24" y="32" width="32" height="20" rx="4" fill="#0F766E" opacity="0.8"/>
+  
+  <!-- Front Card (lighter blue, on top) -->
+  <rect x="20" y="24" width="32" height="20" rx="4" fill="url(#cardGradient)"/>
+  
+  <!-- Person Icon (left side of front card) -->
+  <g transform="translate(26, 30)">
+    <!-- Head -->
+    <circle cx="4" cy="4" r="3" fill="white"/>
+    <!-- Shoulders -->
+    <path d="M 1 12 Q 4 10 7 12" stroke="white" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  </g>
+  
+  <!-- Text Lines Icon (right side of front card) -->
+  <g transform="translate(38, 30)">
+    <!-- Top line (longest) -->
+    <rect x="0" y="4" width="10" height="2" rx="1" fill="white"/>
+    <!-- Middle line (medium) -->
+    <rect x="0" y="8" width="7" height="2" rx="1" fill="white"/>
+    <!-- Bottom line (shortest) -->
+    <rect x="0" y="12" width="5" height="2" rx="1" fill="white"/>
+  </g>
+  
+  <!-- Text: NexCard -->
+  <text x="60" y="42" font-family="system-ui, -apple-system, sans-serif" font-size="28" font-weight="bold" fill="#171717">
+    NexCard
+  </text>
+  
+  <defs>
+    <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#14B8A6"/>
+      <stop offset="100%" style="stop-color:#0F766E"/>
+    </linearGradient>
+  </defs>
+</svg>

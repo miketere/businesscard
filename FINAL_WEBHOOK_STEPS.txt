@@ -1,0 +1,59 @@
+═══════════════════════════════════════════════════════════════
+  FINAL STEPS: Get Your Webhook Secret
+═══════════════════════════════════════════════════════════════
+
+✅ Localtunnel is running (no signup needed!)
+✅ PayMongo webhooks page should be open
+
+STEP 1: GET YOUR PUBLIC URL
+───────────────────────────────────────────────────────────────
+Look at the PowerShell window that opened.
+
+You'll see:
+  your url is: https://xxxxx.loca.lt
+
+COPY that URL (example: https://abc123.loca.lt)
+
+
+STEP 2: CREATE WEBHOOK IN PAYMONGO
+───────────────────────────────────────────────────────────────
+In the PayMongo page that opened:
+
+1. Click "Create a new webhook"
+
+2. Endpoint URL field, paste:
+   https://YOUR-URL.loca.lt/api/subscriptions/webhook
+   
+   Replace YOUR-URL with the URL from Step 1
+   Example: https://abc123.loca.lt/api/subscriptions/webhook
+
+3. Scroll to "Subscription" section
+
+4. Check these boxes:
+   ☑ subscription.activated
+   ☑ subscription.updated
+   ☑ subscription.past_due
+   ☑ subscription.unpaid
+   ☑ subscription.invoice.paid
+   ☑ subscription.invoice.payment_failed
+
+5. Click "Create webhook"
+
+
+STEP 3: COPY WEBHOOK SECRET
+───────────────────────────────────────────────────────────────
+After creating, PayMongo shows:
+  Webhook Secret: whsec_xxxxxxxxxxxxx
+
+COPY the entire secret (starts with whsec_)
+
+
+STEP 4: TELL ME THE SECRET
+───────────────────────────────────────────────────────────────
+Just reply:
+  "My webhook secret is: whsec_xxxxxxxxxxxxx"
+
+I'll add it to your .env file right away!
+
+═══════════════════════════════════════════════════════════════
+

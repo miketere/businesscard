@@ -1,0 +1,72 @@
+═══════════════════════════════════════════════════════════════
+  QUICK GUIDE: Get Your PayMongo Webhook Secret
+═══════════════════════════════════════════════════════════════
+
+STEP 1: GET YOUR NGROK URL
+───────────────────────────────────────────────────────────────
+I've opened http://localhost:4040 in your browser.
+
+On that page, you'll see:
+  • Forwarding
+    https://xxxxx.ngrok-free.app → http://localhost:3000
+
+COPY the HTTPS URL (the one starting with https://)
+Example: https://abc123-def456.ngrok-free.app
+
+
+STEP 2: CREATE WEBHOOK IN PAYMONGO
+───────────────────────────────────────────────────────────────
+I've opened the PayMongo webhooks page in your browser.
+
+1. Click "Create a new webhook" button
+
+2. In "Endpoint URL" field, paste:
+   https://YOUR-NGROK-URL/api/subscriptions/webhook
+   
+   Replace YOUR-NGROK-URL with the URL from Step 1
+   
+   Example: https://abc123-def456.ngrok-free.app/api/subscriptions/webhook
+
+3. Scroll down to find "Subscription" section
+
+4. Check these boxes:
+   ☑ subscription.activated
+   ☑ subscription.updated
+   ☑ subscription.past_due
+   ☑ subscription.unpaid
+   ☑ subscription.invoice.paid
+   ☑ subscription.invoice.payment_failed
+
+5. Click "Create webhook" or "Save"
+
+
+STEP 3: COPY THE WEBHOOK SECRET
+───────────────────────────────────────────────────────────────
+After creating, PayMongo will show:
+  • Webhook Secret: whsec_xxxxxxxxxxxxx
+
+COPY the entire secret (starts with whsec_)
+
+
+STEP 4: TELL ME THE SECRET
+───────────────────────────────────────────────────────────────
+Just reply with:
+  "My webhook secret is: whsec_xxxxxxxxxxxxx"
+
+I'll add it to your .env file automatically!
+
+
+═══════════════════════════════════════════════════════════════
+  TROUBLESHOOTING
+═══════════════════════════════════════════════════════════════
+
+If ngrok page doesn't load:
+  • Wait 10-15 seconds and refresh
+  • Make sure ngrok is running
+
+If you can't find Subscription events:
+  • You may need to contact PayMongo support first
+  • Look for any event with "subscription" in the name
+
+═══════════════════════════════════════════════════════════════
+

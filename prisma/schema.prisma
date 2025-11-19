@@ -1,0 +1,203 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String        @id @default(cuid())
+  email           String        @unique
+  password        String
+  name            String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  cards           Card[]
+  contacts        Contact[]
+  teams           TeamMember[]
+  subscription    Subscription?
+  payments        Payment[]
+}
+
+model Card {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  title         String?
+  company       String?
+  email         String
+  phone         String?
+  website       String?
+  address       String?
+  bio           String?
+  profileImage  String?
+  logo          String?
+  primaryColor  String   @default("#3B82F6")
+  secondaryColor String  @default("#1E40AF")
+  template      String   @default("default")
+  isDefault     Boolean  @default(false)
+  socialLinks   String?  // JSON string
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  shares        Share[]
+  views         CardView[]
+  contacts      Contact[]
+  saves         CardSave[]
+}
+
+model Share {
+  id        String   @id @default(cuid())
+  cardId    String
+  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  method    String   // 'qr', 'link', 'email', 'nfc', 'sms'
+  sharedAt  DateTime @default(now())
+  sharedWith String?
+  metadata  String?  // JSON string
+}
+
+model CardView {
+  id        String   @id @default(cuid())
+  cardId    String
+  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  viewedAt  DateTime @default(now())
+  ipAddress String?
+  userAgent String?
+  referrer  String?
+  utmSource String?
+  utmMedium String?
+  utmCampaign String?
+  utmTerm   String?
+  utmContent String?
+  device    String?  // 'desktop', 'mobile', 'tablet'
+  browser   String?  // 'chrome', 'firefox', 'safari', etc.
+  os        String?  // 'windows', 'macos', 'ios', 'android', etc.
+  country   String?
+  city      String?
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cardId    String?
+  card      Card?    @relation(fields: [cardId], references: [id])
+  name      String
+  email     String?
+  phone     String?
+  company   String?
+  title     String?
+  notes     String?
+  tags      String?  // JSON array
+  metAt     DateTime?
+  location  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  logo        String?
+  brandColor  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  members     TeamMember[]
+}
+
+model TeamMember {
+  id        String   @id @default(cuid())
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      String   @default("member") // 'admin', 'member'
+  createdAt DateTime @default(now())
+}
+
+model CardSave {
+  id        String   @id @default(cuid())
+  cardId    String
+  card      Card     @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  savedAt   DateTime @default(now())
+  method    String?  // 'vcard', 'manual', etc.
+  ipAddress String?
+  userAgent String?
+}
+
+model SubscriptionPlan {
+  id              String         @id @default(cuid())
+  name            String         @unique // 'free', 'basic', 'pro'
+  displayName     String         // 'Free', 'Basic', 'Pro'
+  price           Int            // Price in cents
+  currency        String         @default("PHP")
+  interval        String         // 'month', 'year'
+  paymongoPlanId  String?        @unique
+  features        String?        // JSON string with feature list
+  maxCards        Int            @default(1)
+  maxContacts     Int            @default(10)
+  hasAnalytics    Boolean        @default(false)
+  hasIntegrations Boolean        @default(false)
+  hasCustomBranding Boolean      @default(false)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  subscriptions   Subscription[]
+  payments        Payment[]
+}
+
+model Subscription {
+  id                    String    @id @default(cuid())
+  userId                String    @unique
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  planId                String
+  plan                  SubscriptionPlan @relation(fields: [planId], references: [id])
+  paymongoSubscriptionId String?   @unique  // Optional: null for one-time payments
+  paymongoPaymentIntentId String? @unique  // For one-time payments
+  status                String    // 'incomplete', 'active', 'past_due', 'unpaid', 'cancelled', 'expired'
+  currentPeriodStart    DateTime?
+  currentPeriodEnd      DateTime?
+  expiresAt             DateTime? // Expiration date for 1-year plans
+  cancelAtPeriodEnd     Boolean   @default(false)
+  cancelledAt           DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  invoices              Invoice[]
+  payments              Payment[]
+}
+
+model Invoice {
+  id                  String       @id @default(cuid())
+  subscriptionId      String
+  subscription        Subscription @relation(fields: [subscriptionId], references: [id], onDelete: Cascade)
+  paymongoInvoiceId   String       @unique
+  amount              Int           // Amount in cents
+  currency            String        @default("PHP")
+  status              String        // 'paid', 'pending', 'failed'
+  paidAt              DateTime?
+  dueDate             DateTime?
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+}
+
+model Payment {
+  id                    String    @id @default(cuid())
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subscriptionId        String?
+  subscription          Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+  planId                String
+  plan                  SubscriptionPlan @relation(fields: [planId], references: [id])
+  paymongoPaymentIntentId String  @unique
+  amount                Int       // Amount in cents
+  currency              String    @default("PHP")
+  status                String    // 'succeeded', 'pending', 'failed', 'cancelled'
+  paymentMethodType     String?   // 'card', 'gcash', etc.
+  description           String?
+  paidAt                DateTime?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}
+
