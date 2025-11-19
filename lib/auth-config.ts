@@ -39,16 +39,11 @@ export const authOptions = {
   ],
   callbacks: {
     async session({ session, user }: any) {
-      if (session.user) {
+      // For database sessions, user is passed in the session callback
+      if (session.user && user) {
         session.user.id = user.id
       }
       return session
-    },
-    async jwt({ token, user }: any) {
-      if (user) {
-        token.id = user.id
-      }
-      return token
     },
   },
   pages: {
