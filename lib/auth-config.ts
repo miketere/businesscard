@@ -30,7 +30,7 @@ if (!process.env.NEXTAUTH_URL) {
   throw new Error('NEXTAUTH_URL is required')
 }
 
-const authOptions = {
+export const authOptions = {
   adapter: PrismaAdapter(prisma) as any,
   providers: [
     GoogleProvider({
@@ -56,6 +56,6 @@ const authOptions = {
   },
 }
 
-// Export NextAuth with handlers
-export const { handlers, auth, signIn, signOut } = NextAuth(authOptions)
+// Export authOptions for use in route handler
+// Note: handlers are created in the route file, not here
 
