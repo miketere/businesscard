@@ -3,15 +3,23 @@ import Link from 'next/link'
 import { Plus, Sparkles, Eye, Share2 } from 'lucide-react'
 import Header from '@/components/Header'
 import CardsGrid from '@/components/CardsGrid'
-
-const TEMP_USER_ID = 'temp-user-id'
+import { getSession } from '@/lib/auth'
+import { redirect } from 'next/navigation'
 
 // Force dynamic rendering to avoid build-time database access
 export const dynamic = 'force-dynamic'
 
 export default async function DashboardPage() {
+  const session = await getSession()
+  
+  if (!session || !session.user) {
+    redirect('/auth/signin?callbackUrl=/dashboard')
+  }
+
+  const userId = session.user.id
+
   const cards = await prisma.card.findMany({
-    where: { userId: TEMP_USER_ID },
+    where: { userId },
     orderBy: { createdAt: 'desc' },
     include: {
       _count: {

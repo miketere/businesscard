@@ -13,8 +13,18 @@ npm install
 Create a `.env` file in the root directory with the following:
 
 ```env
-DATABASE_URL="file:./dev.db"
+DATABASE_URL="postgresql://postgres:password@localhost:5432/business_card?schema=public"
 NEXT_PUBLIC_URL="http://localhost:3000"
+
+# NextAuth Configuration (Required for authentication)
+# Generate NEXTAUTH_SECRET with: openssl rand -base64 32
+NEXTAUTH_URL="http://localhost:3000"
+NEXTAUTH_SECRET="your-generated-secret-key-here"
+
+# Google OAuth (Required for authentication)
+# Get these from https://console.cloud.google.com/
+GOOGLE_CLIENT_ID="your-google-client-id.apps.googleusercontent.com"
+GOOGLE_CLIENT_SECRET="your-google-client-secret"
 
 # Supabase Storage (Required for file uploads on Vercel, optional for local development)
 # Get these from https://app.supabase.com → Settings → API

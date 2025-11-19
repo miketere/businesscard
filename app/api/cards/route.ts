@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { canCreateCard } from '@/lib/subscription'
+import { getSession } from '@/lib/auth'
 import { z } from 'zod'
 
 const cardSchema = z.object({
@@ -22,13 +23,21 @@ const cardSchema = z.object({
   socialLinks: z.string().optional(),
 })
 
-const TEMP_USER_ID = 'temp-user-id'
-const TEMP_USER_EMAIL = 'temp@user.com'
-
 export async function POST(request: NextRequest) {
   try {
+    const session = await getSession()
+    
+    if (!session || !session.user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const userId = session.user.id
+
     // Check if user can create more cards
-    const canCreate = await canCreateCard()
+    const canCreate = await canCreateCard(userId)
     if (!canCreate.allowed) {
       return NextResponse.json(
         { error: canCreate.reason || 'Card limit reached' },
@@ -39,21 +48,9 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const validated = cardSchema.parse(body)
 
-    // Ensure the temp user exists
-    const user = await prisma.user.upsert({
-      where: { id: TEMP_USER_ID },
-      update: {},
-      create: {
-        id: TEMP_USER_ID,
-        email: TEMP_USER_EMAIL,
-        password: 'temp-password', // In production, this should be hashed
-        name: 'Temp User',
-      },
-    })
-
     const card = await prisma.card.create({
       data: {
-        userId: user.id,
+        userId,
         ...validated,
         socialLinks: validated.socialLinks || null,
       },
@@ -71,10 +68,22 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
+    const session = await getSession()
+    
+    if (!session || !session.user) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const userId = session.user.id
+
     const cards = await prisma.card.findMany({
-      where: { userId: TEMP_USER_ID },
+      where: { userId },
       orderBy: { createdAt: 'desc' },
     })
+
     return NextResponse.json(cards)
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch cards' }, { status: 500 })

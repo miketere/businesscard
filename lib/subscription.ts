@@ -5,9 +5,6 @@
 
 import { prisma } from './prisma'
 
-// Temporary user ID - replace with actual auth
-const TEMP_USER_ID = 'temp-user-id'
-
 export interface UserLimits {
   maxCards: number
   maxContacts: number
@@ -21,10 +18,10 @@ export interface UserLimits {
 /**
  * Get user's subscription limits based on their current plan
  */
-export async function getUserLimits(): Promise<UserLimits> {
+export async function getUserLimits(userId: string): Promise<UserLimits> {
   try {
     const subscription = await prisma.subscription.findUnique({
-      where: { userId: TEMP_USER_ID },
+      where: { userId },
       include: { plan: true },
     })
 
@@ -73,9 +70,10 @@ function getFreePlanLimits(): UserLimits {
  * Check if user has access to a specific feature
  */
 export async function checkFeatureAccess(
-  feature: 'analytics' | 'integrations' | 'customBranding'
+  feature: 'analytics' | 'integrations' | 'customBranding',
+  userId: string
 ): Promise<boolean> {
-  const limits = await getUserLimits()
+  const limits = await getUserLimits(userId)
 
   switch (feature) {
     case 'analytics':
@@ -92,15 +90,15 @@ export async function checkFeatureAccess(
 /**
  * Check if a feature is enabled for the user
  */
-export async function isFeatureEnabled(feature: string): Promise<boolean> {
-  return checkFeatureAccess(feature as any)
+export async function isFeatureEnabled(feature: string, userId: string): Promise<boolean> {
+  return checkFeatureAccess(feature as any, userId)
 }
 
 /**
  * Check if user can create more cards
  */
-export async function canCreateCard(): Promise<{ allowed: boolean; reason?: string }> {
-  const limits = await getUserLimits()
+export async function canCreateCard(userId: string): Promise<{ allowed: boolean; reason?: string }> {
+  const limits = await getUserLimits(userId)
 
   // Unlimited cards (-1 means unlimited)
   if (limits.maxCards === -1) {
@@ -109,7 +107,7 @@ export async function canCreateCard(): Promise<{ allowed: boolean; reason?: stri
 
   // Count current cards
   const cardCount = await prisma.card.count({
-    where: { userId: TEMP_USER_ID },
+    where: { userId },
   })
 
   if (cardCount >= limits.maxCards) {
@@ -125,8 +123,8 @@ export async function canCreateCard(): Promise<{ allowed: boolean; reason?: stri
 /**
  * Check if user can add more contacts
  */
-export async function canAddContact(): Promise<{ allowed: boolean; reason?: string }> {
-  const limits = await getUserLimits()
+export async function canAddContact(userId: string): Promise<{ allowed: boolean; reason?: string }> {
+  const limits = await getUserLimits(userId)
 
   // Unlimited contacts (-1 means unlimited)
   if (limits.maxContacts === -1) {
@@ -135,7 +133,7 @@ export async function canAddContact(): Promise<{ allowed: boolean; reason?: stri
 
   // Count current contacts
   const contactCount = await prisma.contact.count({
-    where: { userId: TEMP_USER_ID },
+    where: { userId },
   })
 
   if (contactCount >= limits.maxContacts) {
